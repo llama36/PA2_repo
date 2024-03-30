@@ -8,6 +8,11 @@ public class Event {
         time = 0;
     }
 
+    public Event(int type, double time) {
+        this.type = type;
+        this.time = time;
+    }
+
     void setType(int inputType){
         type = inputType;
     }
