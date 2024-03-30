@@ -13,12 +13,20 @@ public class Event {
         this.time = time;
     }
 
-    void setType(int inputType){
+    public void setType(int inputType){
         type = inputType;
     }
 
-    void setTime(int inputTime){
+    public void setTime(int inputTime){
         time = inputTime;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public double getTime() {
+        return time;
     }
     
 }
