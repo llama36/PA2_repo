@@ -1,14 +1,14 @@
-public class Event {
+public class EventNode {
     
     private int type;
     private double time;
 
-    public Event() {
+    public EventNode() {
         type = 0;
         time = 0;
     }
 
-    public Event(int type, double time) {
+    public EventNode(int type, double time) {
         this.type = type;
         this.time = time;
     }
