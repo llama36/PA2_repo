@@ -1,4 +1,4 @@
-public class EventNode {
+public class EventNode implements Comparable<EventNode> {
     
     private int type;
     private double time;
@@ -27,6 +27,13 @@ public class EventNode {
 
     public double getTime() {
         return time;
+    }
+
+    @Override
+    public int compareTo(EventNode e) {
+        if (this.getTime() == e.getTime()) return 0;
+        else if (this.getTime() > e.getTime()) return 1;
+        else return -1;
     }
     
 }
