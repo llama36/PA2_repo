@@ -69,4 +69,14 @@ public class PA2 {
         }
         schedEvent(0, clock+2, eq);
     }
+
+    public static void depHandler(EventNode e) {
+        if (readyQueueCount == 0) {
+            serverIdle = true;
+        }
+        else {
+            readyQueueCount--;
+            schedEvent(1, clock+2, eq);
+        }
+    }
 }
