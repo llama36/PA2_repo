@@ -58,4 +58,15 @@ public class PA2 {
     public static void schedEvent(int type, double t, PriorityQueue<EventNode> e) {
         e.add(new EventNode(type, t));
     }
+
+    public static void arrHandler(EventNode e) {
+        if (serverIdle) { // If CPU is NOT busy, make it busy and then schedule the event
+            serverIdle = false;
+            schedEvent(1, clock+1, eq);
+        }
+        else { // Else, add it to the Ready Queue until the CPU can execute it
+            readyQueueCount++; 
+        }
+        schedEvent(0, clock+2, eq);
+    }
 }
