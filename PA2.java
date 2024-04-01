@@ -10,6 +10,7 @@ public class PA2 {
     private static double avgArrRate;
     private static double avgServTime;
     private static PriorityQueue<EventNode> eq;
+    private static int depCount;
 
     public static void main(String[] args){
         System.out.println();
@@ -33,22 +34,26 @@ public class PA2 {
         serverIdle = true;
         readyQueueCount = 0;
         eq = new PriorityQueue<>();
-        clock += (-1.0 / avgArrRate) * Math.log(Math.random());
-        System.out.println("Arrival time for first event is :" + clock);
+        double t = (-1.0 / avgArrRate) * Math.log(Math.random());
+        System.out.println("Arrival time for first event is :" + t);
         processCount = 1;
-        schedEvent(0, clock, eq); // First EventNode to add
+        schedEvent(0, t, eq); // First EventNode to add
     }
 
     public static void Run() {
         double timeElapsed = 0;
         double oldClock = 0;
-        while (processCount <= 10) {
+        while (depCount <= 3) {
             EventNode running = eq.peek();
             oldClock = clock;
             clock = running.getTime();
             timeElapsed = clock - oldClock;
 
+            if (running.getType() == 1) 
+                depCount++;
+
             System.out.println("Current process: " + processCount);
+            System.out.println("Event Type: " + running.getType());
             System.out.println("Time elapsed: " + timeElapsed);
             System.out.println();
 
@@ -66,6 +71,8 @@ public class PA2 {
             eq.remove(running);
             processCount++;
         }
+
+        System.out.println("Current event priority queue: " + eq);
     }
 
     public static void schedEvent(int type, double t, PriorityQueue<EventNode> e) {
