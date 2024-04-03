@@ -4,7 +4,6 @@ import java.lang.Math;
 public class PA2 {
 
     private static final int TOTAL_PROCESSES = 10000;
-    //private static int processCount;
     private static double clock;
     private static boolean serverIdle;
     private static int readyQueueCount;
@@ -12,9 +11,10 @@ public class PA2 {
     private static double avgServTime;
     private static PriorityQueue<EventNode> eq;
     private static int depCount;
+
     private static double numProcsInRQ;
     private static double totalTurnaroundTime;
-    private static double totalServiceTime;
+    private static double totalBusyTime;
 
     public static void main(String[] args){
         System.out.println();
@@ -22,7 +22,7 @@ public class PA2 {
         //avgArrRate = Integer.parseInt(args[0]);
         //avgServTime = Double.parseDouble(args[1]);
 
-        avgArrRate = 10;
+        avgArrRate = 30;
         avgServTime = 0.04;
 
         Init();
@@ -39,11 +39,9 @@ public class PA2 {
         readyQueueCount = 0;
         eq = new PriorityQueue<>();
         double t = (-1.0 / avgArrRate) * Math.log(Math.random());
-        System.out.println("Arrival time for first event is :" + t + "\n");
-        //processCount = 1;
         numProcsInRQ = 0;
         totalTurnaroundTime = 0;
-        totalServiceTime = 0;
+        totalBusyTime = 0;
         schedEvent(0, t, eq); // First EventNode to add
     }
 
@@ -60,20 +58,11 @@ public class PA2 {
 
             if (running.getType() == 1) {
                 depCount++;
-                //processCount++;
             }
-            
-            System.err.println("Current Event Queue: ");
-            for (EventNode e : eq) {
-                System.out.println(e.getType() + ", " + e.getTime());
+
+            if (!serverIdle) {
+                totalBusyTime += timeElapsed; 
             }
-            System.out.println();
-            //System.out.println("Current process: " + processCount);
-            // System.out.println("Event Type: " + running.getType());
-            // System.out.println("Time elapsed: " + timeElapsed);
-            // System.out.println("Clock: " + clock);
-            // System.out.println("Old clock: " + oldClock);
-            // System.out.println();
 
             switch (running.getType()) {
                 case 0:
@@ -89,16 +78,14 @@ public class PA2 {
             eq.remove(running);
         }
 
-        System.out.println("Current event priority queue: ");
-        for (EventNode e : eq) {
-            System.out.print(e.getType() + " " + e.getTime() + "\n");
-        }
-
         double avgTurnaroundTime = totalTurnaroundTime / ((double) TOTAL_PROCESSES);
         System.err.println("Avg turnaround time: " + avgTurnaroundTime);
 
         double totalThroughput = ((double) TOTAL_PROCESSES) / clock;
         System.out.println("Total throughput: " + totalThroughput);
+
+        double avgUtilization = totalBusyTime / clock;
+        System.out.println("Avg CPU Utilization: " + avgUtilization);
 
         double avgNumProcsInRQ = numProcsInRQ / clock;
         System.out.println("Avg number of processes in RQ: " + avgNumProcsInRQ);
