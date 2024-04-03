@@ -1,6 +1,9 @@
 import java.util.PriorityQueue;
 import java.lang.Math;
 
+    // ARR EventNode = 0
+    // DEP EventNode = 1
+
 public class PA2 {
 
     private static final int TOTAL_PROCESSES = 10000;
@@ -26,9 +29,6 @@ public class PA2 {
         Run();
 
     }
-
-    // ARR EventNode = 0
-    // DEP EventNode = 1
 
     public static void Init() {
         clock = 0;
@@ -98,7 +98,6 @@ public class PA2 {
         if (serverIdle) { // If CPU is NOT busy, make it busy and then schedule the event
             serverIdle = false;
             double addS = (-1.0 * avgServTime) * Math.log(Math.random());
-            //totalTurnaroundTime += addS;
             schedEvent(1, clock+addS, eq); // Sched with a SERVICE time
         }
         else { // Else, add it to the Ready Queue until the CPU can execute it
