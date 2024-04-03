@@ -19,11 +19,10 @@ public class PA2 {
     public static void main(String[] args){
         System.out.println();
 
-        //avgArrRate = Integer.parseInt(args[0]);
-        //avgServTime = Double.parseDouble(args[1]);
-
-        avgArrRate = 30;
-        avgServTime = 0.04;
+        avgArrRate = Integer.parseInt(args[0]);
+        avgServTime = Double.parseDouble(args[1]);
+        System.out.println("avgArrRate = " + avgArrRate);
+        System.out.println("avgServTime = " + avgServTime);
 
         Init();
         Run();
