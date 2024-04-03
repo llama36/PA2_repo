@@ -4,7 +4,7 @@ import java.lang.Math;
 public class PA2 {
 
     private static final int TOTAL_PROCESSES = 10000;
-    private static int processCount;
+    //private static int processCount;
     private static double clock;
     private static boolean serverIdle;
     private static int readyQueueCount;
@@ -14,6 +14,7 @@ public class PA2 {
     private static int depCount;
     private static double numProcsInRQ;
     private static double totalTurnaroundTime;
+    private static double totalServiceTime;
 
     public static void main(String[] args){
         System.out.println();
@@ -21,7 +22,7 @@ public class PA2 {
         //avgArrRate = Integer.parseInt(args[0]);
         //avgServTime = Double.parseDouble(args[1]);
 
-        avgArrRate = 30;
+        avgArrRate = 10;
         avgServTime = 0.04;
 
         Init();
@@ -39,9 +40,10 @@ public class PA2 {
         eq = new PriorityQueue<>();
         double t = (-1.0 / avgArrRate) * Math.log(Math.random());
         System.out.println("Arrival time for first event is :" + t + "\n");
-        processCount = 1;
+        //processCount = 1;
         numProcsInRQ = 0;
         totalTurnaroundTime = 0;
+        totalServiceTime = 0;
         schedEvent(0, t, eq); // First EventNode to add
     }
 
@@ -58,7 +60,7 @@ public class PA2 {
 
             if (running.getType() == 1) {
                 depCount++;
-                processCount++;
+                //processCount++;
             }
             
             System.err.println("Current Event Queue: ");
@@ -93,8 +95,10 @@ public class PA2 {
         }
 
         double avgTurnaroundTime = totalTurnaroundTime / ((double) TOTAL_PROCESSES);
-
         System.err.println("Avg turnaround time: " + avgTurnaroundTime);
+
+        double totalThroughput = ((double) TOTAL_PROCESSES) / clock;
+        System.out.println("Total throughput: " + totalThroughput);
 
         double avgNumProcsInRQ = numProcsInRQ / clock;
         System.out.println("Avg number of processes in RQ: " + avgNumProcsInRQ);
@@ -107,14 +111,15 @@ public class PA2 {
     public static void arrHandler(EventNode e) {
         if (serverIdle) { // If CPU is NOT busy, make it busy and then schedule the event
             serverIdle = false;
-            double addS = clock + (-1.0 * avgServTime) * Math.log(Math.random());
-            schedEvent(1, addS, eq); // Sched with a SERVICE time
+            double addS = (-1.0 * avgServTime) * Math.log(Math.random());
+            //totalTurnaroundTime += addS;
+            schedEvent(1, clock+addS, eq); // Sched with a SERVICE time
         }
         else { // Else, add it to the Ready Queue until the CPU can execute it
             readyQueueCount++; 
         }
-        double addA = clock + (-1.0 / avgArrRate) * Math.log(Math.random());
-        schedEvent(0, addA, eq); // Sched with an arrival time (add an interarrival time to clock)
+        double addA = (-1.0 / avgArrRate) * Math.log(Math.random());
+        schedEvent(0, clock+addA, eq); // Sched with an arrival time (add an interarrival time to clock)
     }
 
     public static void depHandler(EventNode e) {
@@ -123,9 +128,9 @@ public class PA2 {
         }
         else {
             readyQueueCount--;
-            double addS = clock + (-1.0 * avgServTime) * Math.log(Math.random());
-            totalTurnaroundTime += addS - e.getTime();
-            schedEvent(1, addS, eq); // Sched with a SERVICE time
+            double addS = (-1.0 * avgServTime) * Math.log(Math.random());
+            totalTurnaroundTime += addS;
+            schedEvent(1, clock+addS, eq); // Sched with a SERVICE time
         }
     }
 }
