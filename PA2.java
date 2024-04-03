@@ -21,8 +21,6 @@ public class PA2 {
 
         avgArrRate = Integer.parseInt(args[0]);
         avgServTime = Double.parseDouble(args[1]);
-        System.out.println("avgArrRate = " + avgArrRate);
-        System.out.println("avgServTime = " + avgServTime);
 
         Init();
         Run();
@@ -88,6 +86,8 @@ public class PA2 {
 
         double avgNumProcsInRQ = numProcsInRQ / clock;
         System.out.println("Avg number of processes in RQ: " + avgNumProcsInRQ);
+
+        System.out.println();
     }
 
     public static void schedEvent(int type, double t, PriorityQueue<EventNode> e) {
